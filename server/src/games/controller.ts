@@ -8,13 +8,13 @@ import {IsHand, calculateWinner} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
 
-class GameUpdate {
+// class GameUpdate {
 
-  @Validate(IsHand, {
-    message: 'Not a valid hand'
-  })
-  hand: Hand
-}
+//   @Validate(IsStack, {
+//     message: 'Not a valid stack'
+//   })
+//   stack: Stack
+// }
 
 @JsonController()
 export default class GameController {
@@ -81,7 +81,7 @@ export default class GameController {
   async updateGame(
     @CurrentUser() user: User,
     @Param('id') gameId: number,
-    @Body() update: GameUpdate
+    @Body() update: Game
   ) {
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
@@ -95,7 +95,7 @@ export default class GameController {
     //   throw new BadRequestError(`Invalid move`)
     // }    
 
-    const winner = calculateWinner(update.stack)
+    const winner = calculateWinner(update.players[0], update.players[1])
     if (winner) {
       game.winner = winner
       game.status = 'finished'
@@ -104,7 +104,7 @@ export default class GameController {
     //   game.status = 'finished'
     // }
     else {
-      game.turn = player.hand === 'hand1' ? 'hand2' : 'hand1'
+      game.turn = player.playerHand === 'hand1' ? 'hand2' : 'hand1'
     }
     game.stack = update.stack
     await game.save()

@@ -1,8 +1,8 @@
 import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, OneToOne, ManyToOne } from 'typeorm'
 import User from '../users/entity'
 
-export type PlayerHand = 'hand1' | 'hand2' | any
-export type Card = {color: string, points: number, playerId: PlayerHand, cardId: number, isValid: boolean}
+export type PlayerHand = 'hand1' | 'hand2'
+export type Card = {color: string, points: number, playerId: PlayerHand}
 // export type Hand = [Card, Card, Card]
 export type Stack = [Card] | null
 
@@ -48,7 +48,7 @@ export class Player extends BaseEntity {
   @OneToOne(_ => Hand, hand => hand.player)
   hand: Hand
 
-  @Column('text')
+  @Column('text', {default: 'hand1'})
   playerHand: PlayerHand
 
   @Column('integer', { name: 'user_id' })
