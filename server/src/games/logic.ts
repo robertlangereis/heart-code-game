@@ -1,53 +1,77 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator'
-import { Board, Symbol, Row } from './entities'
+import { Stack, Hand, Player, PlayerHand } from './entities'
 
 @ValidatorConstraint()
-export class IsBoard implements ValidatorConstraintInterface {
+export class IsHand implements ValidatorConstraintInterface {
 
-  validate(board: Board) {
-    const symbols = [ 'x', 'o', null ]
-    return board.length === 3 &&
-      board.every(row =>
-        row.length === 3 &&
-        row.every(symbol => symbols.includes(symbol))
-      )
+  validate(hand: Hand) {
+    return hand.cards.length === 3
   }
 }
 
-export const isValidTransition = (playerSymbol: Symbol, from: Board, to: Board) => {
-  const changes = from
-    .map(
-      (row, rowIndex) => row.map((symbol, columnIndex) => ({
-        from: symbol, 
-        to: to[rowIndex][columnIndex]
-      }))
-    )
-    .reduce((a,b) => a.concat(b))
-    .filter(change => change.from !== change.to)
 
-  return changes.length === 1 && 
-    changes[0].to === playerSymbol && 
-    changes[0].from === null
+export const calculatePoints = (stack: Stack) => {
+  
+let playerOneScore: number = 20
+let playerTwoScore: number = 20
+let isValid: boolean = true
+
+if (!stack) return
+stack.map( card => {
+  if(!isValid) { return isValid = true}
+  else {
+    switch (card.color){
+    case "red":
+      if(card.playerId === "hand1"){
+      return playerTwoScore - card.points
+      }
+      else {return playerOneScore - card.points}
+    case "green":
+      if(card.playerId === "hand1"){
+      return playerOneScore + card.points
+      }
+      else {return playerTwoScore + card.points}
+    case "blue":
+      return isValid = false
+    case "black":
+      if(card.playerId === "hand1"){
+        return playerTwoScore = Math.floor(playerTwoScore / 2)
+      } else {return playerOneScore = Math.floor(playerOneScore / 2)}
+    case "purple":
+      if(card.playerId === "hand1"){
+      return playerOneScore * 2
+      }  else return playerTwoScore * 2
+    }
+  }
+})
 }
 
-export const calculateWinner = (board: Board): Symbol | null =>
-  board
-    .concat(
-      // vertical winner
-      [0, 1, 2].map(n => board.map(row => row[n])) as Row[]
-    )
-    .concat(
-      [
-        // diagonal winner ltr
-        [0, 1, 2].map(n => board[n][n]),
-        // diagonal winner rtl
-        [0, 1, 2].map(n => board[2-n][n])
-      ] as Row[]
-    )
-    .filter(row => row[0] && row.every(symbol => symbol === row[0]))
-    .map(row => row[0])[0] || null
+export const calculateWinner = (player: Player, player2: Player): PlayerHand | null =>{
+  if (player.points <= 0){
+    return "hand2"
+  } else if (player2.points <= 0) {
+    return "hand1"
+  } else {
+    return null
+  }
+}
 
-export const finished = (board: Board): boolean =>
-  board
-    .reduce((a,b) => a.concat(b) as Row)
-    .every(symbol => symbol !== null)
+    // .concat(
+    //   // vertical winner
+    //   [0, 1, 2].map(n => board.map(row => row[n])) as Row[]
+    // )
+    // .concat(
+    //   [
+    //     // diagonal winner ltr
+    //     [0, 1, 2].map(n => board[n][n]),
+    //     // diagonal winner rtl
+    //     [0, 1, 2].map(n => board[2-n][n])
+    //   ] as Row[]
+    // )
+    // .filter(row => row[0] && row.every(symbol => symbol === row[0]))
+    // .map(row => row[0])[0] || null
+
+// export const finished = (board: Board): boolean =>
+//   board
+//     .reduce((a,b) => a.concat(b) as Row)
+//     .every(symbol => symbol !== null)

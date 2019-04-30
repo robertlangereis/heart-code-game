@@ -3,17 +3,17 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Board } from './entities'
-import {IsBoard, isValidTransition, calculateWinner, finished} from './logic'
+import { Game, Player, Stack, Card, Hand } from './entities'
+import {IsHand, calculateWinner} from './logic'
 import { Validate } from 'class-validator'
 import {io} from '../index'
 
 class GameUpdate {
 
-  @Validate(IsBoard, {
-    message: 'Not a valid board'
+  @Validate(IsHand, {
+    message: 'Not a valid hand'
   })
-  board: Board
+  hand: Hand
 }
 
 @JsonController()
@@ -30,7 +30,8 @@ export default class GameController {
     await Player.create({
       game: entity, 
       user,
-      hand: 'hand1'
+      playerHand: 'hand1',
+      points: 20
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -60,7 +61,8 @@ export default class GameController {
     const player = await Player.create({
       game, 
       user,
-      hand: 'hand2'
+      playerHand: 'hand2',
+      points: 20
     }).save()
 
     io.emit('action', {
@@ -88,23 +90,23 @@ export default class GameController {
 
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
-    if (player.hand !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.hand, game.board, update.board)) {
-      throw new BadRequestError(`Invalid move`)
-    }    
+    if (player.playerHand !== game.turn) throw new BadRequestError(`It's not your turn`)
+    // if (!isValidTransition(player.hand, game.board, update.board)) {
+    //   throw new BadRequestError(`Invalid move`)
+    // }    
 
-    const winner = calculateWinner(update.board)
+    const winner = calculateWinner(update.stack)
     if (winner) {
       game.winner = winner
       game.status = 'finished'
     }
-    else if (finished(update.board)) {
-      game.status = 'finished'
-    }
+    // else if (finished(update.board)) {
+    //   game.status = 'finished'
+    // }
     else {
       game.turn = player.hand === 'hand1' ? 'hand2' : 'hand1'
     }
-    game.board = update.board
+    game.stack = update.stack
     await game.save()
     
     io.emit('action', {
