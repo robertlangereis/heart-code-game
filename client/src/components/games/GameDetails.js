@@ -13,12 +13,14 @@ class GameDetails extends PureComponent {
   componentWillMount() {
     if (this.props.authenticated) {
       if (this.props.game === null) this.props.getGames()
+      // get the props of the game (with all attached methods)
       if (this.props.users === null) this.props.getUsers()
     }
   }
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
+// here we define the function that is used with callback in the Board.js (when move is made)
   makeMove = (toRow, toCell) => {
     const {game, updateGame} = this.props
 
@@ -26,6 +28,7 @@ class GameDetails extends PureComponent {
       (row, rowIndex) => row.map((cell, cellIndex) => {
         if (rowIndex === toRow && cellIndex === toCell) return game.turn
         else return cell
+        // If rowIndex equals toRow AND cellIndex equals toCell return game.turn. Turn is a method of the "game". 
       })
     )
     updateGame(game.id, board)

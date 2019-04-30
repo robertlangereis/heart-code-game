@@ -2,8 +2,41 @@ import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, M
 import User from '../users/entity'
 
 export type Symbol = 'x' | 'o'
+// replaced by: P1 or P2
 export type Row = [ Symbol | null, Symbol | null, Symbol | null ]
-export type Board = [ Row, Row, Row ]
+// Each player has their own row:
+
+// STACK: 
+
+// {id: 'p1', 
+// color: red, 
+// points: if(isValid === true){return +2}
+//         else{0},
+//  isValid: true
+// },
+
+// {id: 'p2', 
+//  color: blue, 
+//  points: if(isValid === true){array.length.isValid = false} 
+//         else{0},
+//  isValid: true
+// },
+
+// {id: 'p1', 
+//  color: blue, 
+//  points: if(isValid === true){array.length.isValid = false} 
+//         else{return 0},
+//  isValid: true
+// }
+
+// ROW2: [{color: red, points: -2}, {color: blue, points: 0}, {color: green, points: +2}, Symbol: 'p2'] 
+
+// ROW3-TABLE: [{color: red, points: -2, ID: P1}, {color: blue, points: 0, ID: P2}] 
+
+//CSS Layer so you can't see what cards the other player has, but
+
+export type Board = [ Row, Row , Row]
+// HAND P1, STACK, HAND-P2
 
 type Status = 'pending' | 'started' | 'finished'
 
