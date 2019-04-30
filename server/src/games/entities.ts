@@ -64,8 +64,8 @@ export class Player extends BaseEntity {
   @Column('text', {default: 'hand1'})
   playerHand: PlayerHand
   
-  @Column('integer', { name: 'user_id' })
-  userId: number
+  // @Column('integer', { name: 'user_id' })
+  // userId: number
   
   @Column('number', {default: 20})
   points: number
