@@ -30,7 +30,7 @@ export default class GameController {
     await Player.create({
       game: entity, 
       user,
-      symbol: 'x'
+      hand: 'hand1'
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -60,7 +60,7 @@ export default class GameController {
     const player = await Player.create({
       game, 
       user,
-      symbol: 'o'
+      hand: 'hand2'
     }).save()
 
     io.emit('action', {
@@ -88,8 +88,8 @@ export default class GameController {
 
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
-    if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board)) {
+    if (player.hand !== game.turn) throw new BadRequestError(`It's not your turn`)
+    if (!isValidTransition(player.hand, game.board, update.board)) {
       throw new BadRequestError(`Invalid move`)
     }    
 
@@ -102,7 +102,7 @@ export default class GameController {
       game.status = 'finished'
     }
     else {
-      game.turn = player.symbol === 'x' ? 'o' : 'x'
+      game.turn = player.hand === 'hand1' ? 'hand2' : 'hand1'
     }
     game.board = update.board
     await game.save()
