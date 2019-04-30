@@ -1,14 +1,4 @@
-import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator'
-import { Stack, Hand, Player, PlayerHand } from './entities'
-
-@ValidatorConstraint()
-export class IsHand implements ValidatorConstraintInterface {
-
-  validate(hand: Hand) {
-    return hand.cards.length === 3
-  }
-}
-
+import { Stack, Player, PlayerHand } from './entities'
 
 export const calculatePoints = (stack: Stack) => {
   

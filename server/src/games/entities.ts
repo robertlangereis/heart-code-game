@@ -4,9 +4,9 @@ import User from '../users/entity'
 export type PlayerHand = 'hand1' | 'hand2'
 export type Card = {color: string, points: number, playerId: PlayerHand}
 // export type Hand = [Card, Card, Card]
-export type Stack = [Card] | null
+export type Stack = Card[] | null
 
-type Status = 'pending' | 'started' | 'finished'
+type Status = 'pending' | 'started' | 'finished';
 
 @Entity()
 export class Game extends BaseEntity {
@@ -33,41 +33,42 @@ export class Game extends BaseEntity {
 }
 
 @Entity()
-@Index(['game', 'user'], {unique:true})
-export class Player extends BaseEntity {
-
-  @PrimaryGeneratedColumn()
-  id?: number
-
-  @ManyToOne(_ => User, user => user.players)
-  user: User
-
-  @ManyToOne(_ => Game, game => game.players)
-  game: Game
-
-  @OneToOne(_ => Hand, hand => hand.player)
-  hand: Hand
-
-  @Column('text', {default: 'hand1'})
-  playerHand: PlayerHand
-
-  @Column('integer', { name: 'user_id' })
-  userId: number
-
-  @Column('number', {default: 20})
-  points: number
-}
-
-@Entity()
 export class Hand extends BaseEntity {
-
+  
   @PrimaryGeneratedColumn()
   id?: number
-
+  
   @Column('text', {default: [null, null, null]})
-  cards: [Card, Card, Card]
+  cards: Card[]
 
   @OneToOne(_ => Player, player => player.hand)
   player: Player
 }
+
+@Entity()
+@Index(['game', 'user'], {unique:true})
+export class Player extends BaseEntity {
+  
+  @PrimaryGeneratedColumn()
+  id?: number
+  
+  @ManyToOne(_ => User, user => user.players)
+  user: User
+  
+  @ManyToOne(_ => Game, game => game.players)
+  game: Game
+  
+  @OneToOne(_ => Hand, hand => hand.playerId)
+  hand: Hand
+  
+  @Column('text', {default: 'hand1'})
+  playerHand: PlayerHand
+  
+  @Column('integer', { name: 'user_id' })
+  userId: number
+  
+  @Column('number', {default: 20})
+  points: number
+}
+
 

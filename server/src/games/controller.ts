@@ -3,9 +3,9 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Stack, Card, Hand } from './entities'
-import {IsHand, calculateWinner} from './logic'
-import { Validate } from 'class-validator'
+import { Game, Player } from './entities'
+import {calculateWinner} from './logic'
+// import { Validate } from 'class-validator'
 import {io} from '../index'
 
 // class GameUpdate {
