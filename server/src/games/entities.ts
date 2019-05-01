@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne, OneToOne, JoinColumn } from 'typeorm'
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
 import User from '../users/entity'
 
 export type Symbol = 'x' | 'o'
@@ -31,7 +31,6 @@ export class Game extends BaseEntity {
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
   @OneToMany(_ => Player, player => player.game, {eager: true})
-  @JoinColumn()
   players: Player[]
 
   @OneToMany(_ => Card, card => card.game, {eager: true})

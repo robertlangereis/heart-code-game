@@ -68,7 +68,7 @@ export default class GameController {
       symbol: 'o',
       hand: [cardOne, cardTwo, cardThree]
     }).save()
-
+    console.log("player hand test: ", player.hand)
     io.emit('action', {
       type: 'UPDATE_GAME',
       payload: await Game.findOneById(game.id)
