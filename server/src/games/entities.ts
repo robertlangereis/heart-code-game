@@ -11,6 +11,32 @@ const emptyRow: Row = [null, null, null]
 const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
 
 @Entity()
+export class Stack extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id?: number
+
+  @OneToMany(_ => Card, card => card.id, {eager:true})
+  cards: Card[]
+
+}
+
+@Entity()
+export class Card extends BaseEntity {
+  
+  @PrimaryGeneratedColumn()
+  id?: number
+
+  @Column()
+  color: string
+
+  @Column()
+  points: number
+
+  @Column()
+  playerId: Symbol
+}
+
+@Entity()
 export class Game extends BaseEntity {
 
   @PrimaryGeneratedColumn()
