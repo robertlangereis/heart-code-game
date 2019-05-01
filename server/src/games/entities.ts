@@ -1,4 +1,4 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
+import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne, OneToOne, JoinColumn } from 'typeorm'
 import User from '../users/entity'
 
 export type Symbol = 'x' | 'o'
@@ -9,16 +9,6 @@ type Status = 'pending' | 'started' | 'finished'
 
 const emptyRow: Row = [null, null, null]
 const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
-
-@Entity()
-export class Stack extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id?: number
-
-  @OneToMany(_ => Card, card => card.id, {eager:true})
-  cards: Card[]
-
-}
 
 @Entity()
 export class Card extends BaseEntity {
@@ -58,6 +48,10 @@ export class Game extends BaseEntity {
   // http://typeorm.io/#/many-to-one-one-to-many-relations
   @OneToMany(_ => Player, player => player.game, {eager:true})
   players: Player[]
+
+  @OneToOne(_ => Card, {eager: true})
+  @JoinColumn()
+  stack: Card[]
 }
 
 @Entity()
@@ -78,4 +72,8 @@ export class Player extends BaseEntity {
 
   @Column('integer', { name: 'user_id' })
   userId: number
+
+  @OneToOne(_ => Card, {eager: true})
+  @JoinColumn()
+  hand: [Card, Card, Card]
 }
