@@ -18,6 +18,7 @@ class GamesList extends PureComponent {
   }
 
   renderGame = (game) => {
+    console.log(game)
     const {users, history} = this.props
 
     return (

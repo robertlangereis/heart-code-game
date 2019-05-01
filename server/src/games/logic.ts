@@ -4,12 +4,11 @@ export const calculateWinner = (game: Game): Symbol | null => {
   return game.turn
 }
  
-export const generateRandomCard= (playerId: Symbol): Card => {
-  const randomNumber = Math.floor(Math.random() * 100)
-  const randomPoints = Math.floor(1 + Math.random() * 3)
+export const generateRandomCard= (symbol: Symbol): Card => {
   const randomCard = new Card
-  randomCard.points = randomPoints
-  randomCard.playerId = playerId
+  randomCard.points = Math.floor(1 + Math.random() * 3)
+  randomCard.symbol = symbol
+  const randomNumber = Math.floor(Math.random() * 100)
   let color = ''
   if (randomNumber <= 35) {
     color = 'green'

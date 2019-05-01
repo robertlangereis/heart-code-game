@@ -11,22 +11,6 @@ const emptyRow: Row = [null, null, null]
 const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
 
 @Entity()
-export class Card extends BaseEntity {
-  
-  @PrimaryGeneratedColumn()
-  id?: number
-
-  @Column()
-  color: string
-
-  @Column()
-  points: number
-
-  @Column()
-  playerId: Symbol
-}
-
-@Entity()
 export class Game extends BaseEntity {
 
   @PrimaryGeneratedColumn()
@@ -46,10 +30,10 @@ export class Game extends BaseEntity {
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
-  @OneToMany(_ => Player, player => player.game, {eager:true})
+  @OneToMany(_ => Player, player => player.game)
   players: Player[]
 
-  @OneToOne(_ => Card, {eager: true})
+  @OneToMany(_ => Card, card => card.game, {eager: true})
   @JoinColumn()
   stack: Card[]
 }
@@ -73,7 +57,31 @@ export class Player extends BaseEntity {
   @Column('integer', { name: 'user_id' })
   userId: number
 
-  @OneToOne(_ => Card, {eager: true})
+  @OneToMany(_ => Card, card => card.player, {eager: true})
   @JoinColumn()
-  hand: [Card, Card, Card]
+  hand: Card[]
 }
+
+@Entity()
+export class Card extends BaseEntity {
+  
+  @PrimaryGeneratedColumn()
+  id?: number
+
+  @Column()
+  color: string
+
+  @Column()
+  points: number
+
+  @Column({nullable: true})
+  symbol: Symbol
+
+  @ManyToOne(_ => Player, player => player.hand, {nullable: true})
+  player: Player | null
+
+  @ManyToOne(_ => Game, game => game.stack)
+  game: Game
+}
+
+

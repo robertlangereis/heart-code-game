@@ -3,7 +3,7 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player } from './entities'
+import { Game, Player, Card } from './entities'
 import {calculateWinner, generateRandomCard} from './logic'
 import {io} from '../index'
 
@@ -22,11 +22,16 @@ export default class GameController {
   ) {
     const entity = await Game.create().save()
 
+    const cardOne = await Card.create(generateRandomCard('x')).save()
+    const cardTwo = await Card.create(generateRandomCard('x')).save()
+    const cardThree = await Card.create(generateRandomCard('x')).save()
+
+
     await Player.create({
       game: entity, 
       user,
       symbol: 'x',
-      hand: [generateRandomCard('x'), generateRandomCard('x'), generateRandomCard('x')]
+      hand: [cardOne, cardTwo, cardThree]
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -53,11 +58,15 @@ export default class GameController {
     game.status = 'started'
     await game.save()
 
+    const cardOne = await Card.create(generateRandomCard('o')).save()
+    const cardTwo = await Card.create(generateRandomCard('o')).save()
+    const cardThree = await Card.create(generateRandomCard('o')).save()
+
     const player = await Player.create({
       game, 
       user,
       symbol: 'o',
-      hand: [generateRandomCard('o'), generateRandomCard('o'), generateRandomCard('o')]
+      hand: [cardOne, cardTwo, cardThree]
     }).save()
 
     io.emit('action', {
@@ -120,3 +129,4 @@ export default class GameController {
   }
 }
 
+generateRandomCard
