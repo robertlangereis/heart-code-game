@@ -3,17 +3,12 @@ import {
   Body, Patch 
 } from 'routing-controllers'
 import User from '../users/entity'
-import { Game, Player, Board } from './entities'
-import {IsBoard, isValidTransition, calculateWinner, finished} from './logic'
-import { Validate } from 'class-validator'
+import { Game, Player } from './entities'
+import {calculateWinner, generateRandomCard} from './logic'
 import {io} from '../index'
 
 class GameUpdate {
-
-  @Validate(IsBoard, {
-    message: 'Not a valid board'
-  })
-  board: Board
+  game: Game
 }
 
 @JsonController()
@@ -30,7 +25,8 @@ export default class GameController {
     await Player.create({
       game: entity, 
       user,
-      symbol: 'x'
+      symbol: 'x',
+      hand: [generateRandomCard('x'), generateRandomCard('x'), generateRandomCard('x')]
     }).save()
 
     const game = await Game.findOneById(entity.id)
@@ -60,7 +56,8 @@ export default class GameController {
     const player = await Player.create({
       game, 
       user,
-      symbol: 'o'
+      symbol: 'o',
+      hand: [generateRandomCard('o'), generateRandomCard('o'), generateRandomCard('o')]
     }).save()
 
     io.emit('action', {
@@ -88,23 +85,16 @@ export default class GameController {
 
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
-    if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)
-    if (!isValidTransition(player.symbol, game.board, update.board)) {
-      throw new BadRequestError(`Invalid move`)
-    }    
+    if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)   
 
-    const winner = calculateWinner(update.board)
+    const winner = calculateWinner(update.game)
     if (winner) {
       game.winner = winner
       game.status = 'finished'
-    }
-    else if (finished(update.board)) {
-      game.status = 'finished'
-    }
-    else {
+    } else {
       game.turn = player.symbol === 'x' ? 'o' : 'x'
     }
-    game.board = update.board
+    game.stack = update.game.stack
     await game.save()
     
     io.emit('action', {
