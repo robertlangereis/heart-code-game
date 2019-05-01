@@ -30,11 +30,11 @@ export class Game extends BaseEntity {
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
-  @OneToMany(_ => Player, player => player.game)
+  @OneToMany(_ => Player, player => player.game, {eager: true})
+  @JoinColumn()
   players: Player[]
 
   @OneToMany(_ => Card, card => card.game, {eager: true})
-  @JoinColumn()
   stack: Card[]
 }
 
@@ -58,7 +58,6 @@ export class Player extends BaseEntity {
   userId: number
 
   @OneToMany(_ => Card, card => card.player, {eager: true})
-  @JoinColumn()
   hand: Card[]
 }
 

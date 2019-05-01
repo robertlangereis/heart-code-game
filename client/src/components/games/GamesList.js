@@ -18,7 +18,7 @@ class GamesList extends PureComponent {
   }
 
   renderGame = (game) => {
-    console.log(game)
+    console.log('game test', game)
     const {users, history} = this.props
 
     return (
@@ -27,6 +27,7 @@ class GamesList extends PureComponent {
           <Typography color="textSecondary">
             This game is played by&nbsp;
             {
+              game.players &&
               game.players
                 .map(player => users[player.userId].firstName)
                 .join(' and ')
@@ -53,6 +54,9 @@ class GamesList extends PureComponent {
 
   render() {
     const {games, users, authenticated, createGame} = this.props
+
+    console.log('games test:', games)
+
 
     if (!authenticated) return (
 			<Redirect to="/login" />
