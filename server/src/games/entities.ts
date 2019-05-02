@@ -20,7 +20,7 @@ export class Game extends BaseEntity {
   @Column('text', {default: 'pending'})
   status: Status
 
-  @Column('text', {default: 20})
+  @Column('text', {default: 10})
   playerXScore: number
 
   @Column('text', {default: 20})

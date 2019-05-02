@@ -38,7 +38,9 @@ export const getGames = () => (dispatch, getState) => {
   request
     .get(`${baseUrl}/games`)
     .set('Authorization', `Bearer ${jwt}`)
-    .then(result => dispatch(updateGames(result.body)))
+    .then(result => {
+      dispatch(updateGames(result.body))
+    })
     .catch(err => console.error(err))
 }
 
