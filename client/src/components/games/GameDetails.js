@@ -47,7 +47,7 @@ class GameDetails extends PureComponent {
     const opponent = game.players.find(p => p.userId !== userId)
     
     console.log("stack check", game.stack)
-    const stack = stack && 
+    const stack = game.stack && 
       <ShowStack stack={game.stack}/>
 
     const hand = player &&

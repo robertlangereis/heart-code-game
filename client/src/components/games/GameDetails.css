@@ -10,11 +10,18 @@
 }
 
 .heart-code-card-red {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 2em;
+  z-index: 5;
   margin: 10px;
   width: 150px;
   height: 300px;  
   border: 2px solid black;
   background: red;
+  background-image: url('./icons/ember-shot\ \(1\).png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
 
 .heart-code-card-green {
@@ -22,7 +29,11 @@
   width: 150px;
   height: 300px;
   border: 2px solid black;
-  background: green;
+  background: rgb(121, 211, 121);
+  background-image: url('./icons/magic-potion\ \(1\).png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
 
 .heart-code-card-blue {
@@ -30,7 +41,11 @@
   width: 150px;
   height: 300px;
   border: 2px solid black;
-  background: blue;
+  background: lightskyblue;
+  background-image: url('./icons/magic-portal.png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
 
 .heart-code-card-black {
@@ -38,8 +53,12 @@
   width: 150px;
   height: 300px;  
   border: 2px solid black;
-  background: black;
+  background: grey;
   color: white;
+  background-image: url('./icons/diablo-skull\ \(1\).png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
 
 .heart-code-card-purple {
@@ -48,4 +67,8 @@
   height: 300px;
   border: 2px solid black;
   background: purple;
+  background-image: url('./icons/crenulated-shield.png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
 }
