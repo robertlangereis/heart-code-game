@@ -1,11 +1,15 @@
-import { Game, Card, Symbol } from './entities'
+import { Game, Card, Symbol, Player } from './entities'
 
-export const calculateWinner = (game: Game): Symbol | null => {
-  if (game.playerOScore <= 0) {
-    return 'x'
-  } else if (game.playerXScore <= 0) {
-    return 'o'
-  } else 
+export const calculateWinner = (player: Player, game: Game): Symbol | null => {
+  const opponent = game.players.find(item => item.id !== player.id)
+  if (opponent) {
+    if (player.score <= 0) {
+      return opponent.symbol
+    } else if (opponent.score <= 0) {
+      return player.symbol
+    } else 
+    return null
+  }
   return null
 }
  
@@ -30,16 +34,6 @@ export const generateRandomCard = (symbol: Symbol): Card => {
   return randomCard
 }
 
-export const moveCardToStack = (card: Card) => {
-  const newCard = generateRandomCard(card.symbol)
-  // find the player the card belongs to:
-  
-  // filter over hand to insert newCard into hand
-  // players.hand.map(handCard => handCard.id === card.id ? newCard : handCard)
-  // find the game in which the card is played
-  // put the card played into the stack
-  // game.stack.unShift(card)
-}
 
 // export const calculatePoints = (stack: Stack) => {
   

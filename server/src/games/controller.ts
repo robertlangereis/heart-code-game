@@ -8,7 +8,6 @@ import {calculateWinner, generateRandomCard} from './logic'
 import {io} from '../index'
 
 class GameUpdate {
-  game: Game
   cardId: number
 }
 
@@ -97,24 +96,42 @@ export default class GameController {
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)   
 
-    console.log("updategame test: ", update.cardId)
+    // replacing the card played with a new card
+    const newCard = await Card.create(generateRandomCard(player.symbol)).save()
+    player.hand = player.hand.map(handCard => {
+      const isMatch = handCard.id === update.cardId
+      if (isMatch) {
+        return newCard
+      }
+      return handCard
+    })
+    await player.save()
 
-    const winner = calculateWinner(update.game)
-    if (winner) {
-      game.winner = winner
-      game.status = 'finished'
-    } else {
-      game.turn = player.symbol === 'x' ? 'o' : 'x'
-    }
-    game.stack = update.game.stack
+    // putting the card played into the game.stack
+    const card = await Card.findOneById(update.cardId)
+    console.log("update game find card test: ", card)
+    card && game.stack.unshift(card)
+    console.log("stack test one: ", game.stack)
     await game.save()
+
+    const newGame = await Game.findOneById(gameId)
+    if (!newGame) throw new NotFoundError(`Game does not exist`)
+
+    const winner = calculateWinner(player, newGame)
+    if (winner) {
+      newGame.winner = winner
+      newGame.status = 'finished'
+    } else {
+      newGame.turn = player.symbol === 'x' ? 'o' : 'x'
+    }
+    await newGame.save()
     
     io.emit('action', {
       type: 'UPDATE_GAME',
-      payload: game
+      payload: newGame
     })
-
-    return game
+    console.log("returning game test: ", newGame)
+    return newGame
   }
 
   @Authorized()
