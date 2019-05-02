@@ -4,7 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {getGames, joinGame, updateGame} from '../../actions/games'
 import {getUsers} from '../../actions/users'
 import {userId} from '../../jwt'
-import ShowHand from './Hand/ShowHand'
+import ShowHand from './ShowHand'
 import Paper from '@material-ui/core/Paper'
 import './GameDetails.css'
 
@@ -50,7 +50,7 @@ class GameDetails extends PureComponent {
       game.status !== 'pending' &&
       <ShowHand
         hand={player.hand}
-        playerScore={player.symbol === 'x' ? game.playerXScore : game.playerOScore}
+        playerScore={player.score}
       />
      
     const winner = game.players
