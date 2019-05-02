@@ -38,7 +38,9 @@ export const getGames = () => (dispatch, getState) => {
   request
     .get(`${baseUrl}/games`)
     .set('Authorization', `Bearer ${jwt}`)
-    .then(result => dispatch(updateGames(result.body)))
+    .then(result => {
+      dispatch(updateGames(result.body))
+    })
     .catch(err => console.error(err))
 }
 
@@ -69,6 +71,7 @@ export const createGame = () => (dispatch, getState) => {
 }
 
 export const updateGame = (gameId, game) => (dispatch, getState) => {
+  console.log("action test")
   const state = getState()
   const jwt = state.currentUser.jwt
 

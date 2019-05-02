@@ -68,7 +68,6 @@ export default class GameController {
       symbol: 'o',
       hand: [cardOne, cardTwo, cardThree]
     }).save()
-    console.log("player hand test: ", player.hand)
     io.emit('action', {
       type: 'UPDATE_GAME',
       payload: await Game.findOneById(game.id)
@@ -95,6 +94,8 @@ export default class GameController {
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)   
+
+    console.log("updategame test: ")
 
     const winner = calculateWinner(update.game)
     if (winner) {
@@ -128,5 +129,3 @@ export default class GameController {
     return Game.find()
   }
 }
-
-generateRandomCard

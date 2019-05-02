@@ -20,12 +20,6 @@ export class Game extends BaseEntity {
   @Column('text', {default: 'pending'})
   status: Status
 
-  @Column('text', {default: 20})
-  playerXScore: number
-
-  @Column('text', {default: 20})
-  playerOScore: number
-
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
   @OneToMany(_ => Player, player => player.game, {eager: true})
@@ -50,6 +44,9 @@ export class Player extends BaseEntity {
 
   @Column('char', {length: 1})
   symbol: Symbol
+
+  @Column({nullable: true, default: 20})
+  score: number
 
   @Column('integer', { name: 'user_id' })
   userId: number
