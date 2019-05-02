@@ -9,7 +9,7 @@ export const calculateWinner = (game: Game): Symbol | null => {
   return null
 }
  
-export const generateRandomCard= (symbol: Symbol): Card => {
+export const generateRandomCard = (symbol: Symbol): Card => {
   const randomCard = new Card
   randomCard.points = Math.floor(1 + Math.random() * 3)
   randomCard.symbol = symbol
@@ -28,6 +28,17 @@ export const generateRandomCard= (symbol: Symbol): Card => {
   }
   randomCard.color = color
   return randomCard
+}
+
+export const moveCardToStack = (card: Card) => {
+  const newCard = generateRandomCard(card.symbol)
+  // find the player the card belongs to:
+  
+  // filter over hand to insert newCard into hand
+  // players.hand.map(handCard => handCard.id === card.id ? newCard : handCard)
+  // find the game in which the card is played
+  // put the card played into the stack
+  // game.stack.unShift(card)
 }
 
 // export const calculatePoints = (stack: Stack) => {

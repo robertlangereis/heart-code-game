@@ -19,20 +19,10 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
-  makeMove = (toRow, toCell) => {
-    const {game, updateGame} = this.props
-
-    const board = game.board.map(
-      (row, rowIndex) => row.map((cell, cellIndex) => {
-        if (rowIndex === toRow && cellIndex === toCell) return game.turn
-        else return cell
-      })
-    )
-    updateGame(game.id, board)
+  onCardClick = () => {
+    console.log("cardclick test: ", this.props.game.id, this.props.game)
+    this.props.updateGame(this.props.game.id, this.props.game)
   }
-
-
-
   render() {
     const {game, users, authenticated, userId} = this.props
 
@@ -51,6 +41,7 @@ class GameDetails extends PureComponent {
       <ShowHand
         hand={player.hand}
         playerScore={player.score}
+        onCardClick={this.onCardClick}
       />
      
     const winner = game.players
