@@ -2,22 +2,14 @@ import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, M
 import User from '../users/entity'
 
 export type Symbol = 'x' | 'o'
-export type Row = [ Symbol | null, Symbol | null, Symbol | null ]
-export type Board = [ Row, Row, Row ]
 
 type Status = 'pending' | 'started' | 'finished'
-
-const emptyRow: Row = [null, null, null]
-const emptyBoard: Board = [ emptyRow, emptyRow, emptyRow ]
 
 @Entity()
 export class Game extends BaseEntity {
 
   @PrimaryGeneratedColumn()
   id?: number
-
-  @Column('json', {default: emptyBoard})
-  board: Board
 
   @Column('char', {length:1, default: 'x'})
   turn: Symbol
@@ -27,6 +19,12 @@ export class Game extends BaseEntity {
 
   @Column('text', {default: 'pending'})
   status: Status
+
+  @Column('text', {default: 20})
+  playerXScore: number
+
+  @Column('text', {default: 20})
+  playerOScore: number
 
   // this is a relation, read more about them here:
   // http://typeorm.io/#/many-to-one-one-to-many-relations
