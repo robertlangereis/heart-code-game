@@ -4,6 +4,7 @@ import {Redirect} from 'react-router-dom'
 import {getGames, joinGame, updateGame} from '../../actions/games'
 import {getUsers} from '../../actions/users'
 import {userId} from '../../jwt'
+import Hand from './Hand'
 import Paper from '@material-ui/core/Paper'
 import './GameDetails.css'
 
@@ -74,10 +75,10 @@ class GameDetails extends PureComponent {
 
       {
         game.status !== 'pending' 
-        // &&
+        &&
         // <Board board={game.board} makeMove={this.makeMove} />
         // <Stack />
-        // <Hand />
+        <Hand />
       }
     </Paper>)
   }
