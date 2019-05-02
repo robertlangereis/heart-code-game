@@ -9,6 +9,7 @@ import {io} from '../index'
 
 class GameUpdate {
   game: Game
+  cardId: number
 }
 
 @JsonController()
@@ -86,6 +87,7 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() update: GameUpdate
   ) {
+    console.log('update test:', update)
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 

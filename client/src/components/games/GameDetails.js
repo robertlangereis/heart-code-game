@@ -21,7 +21,7 @@ class GameDetails extends PureComponent {
 
   onCardClick = () => {
     console.log("cardclick test: ", this.props.game.id, this.props.game)
-    this.props.updateGame(this.props.game.id, this.props.game)
+    this.props.updateGame(this.props.game.id, this.props.game, 1)
   }
   render() {
     const {game, users, authenticated, userId} = this.props
