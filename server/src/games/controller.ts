@@ -9,6 +9,7 @@ import {io} from '../index'
 
 class GameUpdate {
   game: Game
+  card: Card
 }
 
 @JsonController()
@@ -95,6 +96,8 @@ export default class GameController {
     if (!player) throw new ForbiddenError(`You are not part of this game`)
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)   
+
+    const card = update.card
 
     const winner = calculateWinner(update.game)
     if (winner) {

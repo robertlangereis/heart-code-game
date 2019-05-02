@@ -12,4 +12,3 @@ export default function StackDetails (props) {
             </div>)    }
     else return 'Loading stack of cards...'
 }
-
