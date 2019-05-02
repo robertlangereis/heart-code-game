@@ -8,7 +8,7 @@ export default function ShowHand(props) {
         .map(
           card => {
             const className = `heart-code-card-${card.color}`
-            return <div key={card.id} className={className} onClick={props.onCardClick}>
+            return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
               {card.points},{card.color}
             </div>
           }

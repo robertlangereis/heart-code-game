@@ -19,10 +19,17 @@ class GameDetails extends PureComponent {
 
   joinGame = () => this.props.joinGame(this.props.game.id)
 
-  onCardClick = () => {
-    console.log("cardclick test: ", this.props.game.id, this.props.game)
-    this.props.updateGame(this.props.game.id, this.props.game, 1)
+  onCardClick = (cardId) => {
+    const {game, userId} = this.props
+    const player = game.players.find(p => p.userId === userId)
+    if (player && player.symbol === game.turn) {
+      console.log("oncardclick test: ", cardId)
+      this.props.updateGame(game.id, game, cardId)
+    } else {
+      console.log("Its not your turn, Asshole")
+    }
   }
+
   render() {
     const {game, users, authenticated, userId} = this.props
 

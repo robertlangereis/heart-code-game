@@ -97,7 +97,7 @@ export default class GameController {
     if (game.status !== 'started') throw new BadRequestError(`The game is not started yet`)
     if (player.symbol !== game.turn) throw new BadRequestError(`It's not your turn`)   
 
-    console.log("updategame test: ")
+    console.log("updategame test: ", update.cardId)
 
     const winner = calculateWinner(update.game)
     if (winner) {
