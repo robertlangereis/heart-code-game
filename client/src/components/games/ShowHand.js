@@ -1,6 +1,6 @@
 import React from 'react'
-
 export default function ShowHand(props) {
+  
   return (
     <div className="player-hand">
       {props
@@ -9,7 +9,8 @@ export default function ShowHand(props) {
           card => {
             const className = `heart-code-card-${card.color}`
             return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
-              {card.points},{card.color}
+              {card.points} Point(s)
+              {/* ,{card.color} */}
             </div>
           }
         )
