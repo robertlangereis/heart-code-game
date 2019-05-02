@@ -74,10 +74,11 @@ class GameDetails extends PureComponent {
 
       {
         game.status !== 'pending' 
-        // &&
+        &&
         // <Board board={game.board} makeMove={this.makeMove} />
         // <Stack />
         // <Hand />
+        < StackDetails game={game}/>
       }
     </Paper>)
   }
