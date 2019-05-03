@@ -80,17 +80,17 @@ export const calculatePoints = (game: Game, player: Player) => {
         
         case "black":
           if (card.symbol === player.symbol) {
-            opponent.score = opponent.score - 10
+            opponent.score = (opponent.score = Math.floor(opponent.score / 2))
           } else {
-            player.score = player.score -10
+            player.score = player.score = Math.floor(player.score / 2)
           }
           break;
         
         case "purple":
           if (card.symbol === player.symbol) {
-            opponent.score = opponent.score + 10
+            player.score = player.score = Math.floor(player.score * 2)
           }  else {
-            opponent.score = opponent.score + 10
+            opponent.score = (opponent.score = Math.floor(opponent.score * 2))
           }
           break;
       }

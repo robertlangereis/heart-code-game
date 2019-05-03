@@ -32,9 +32,11 @@ export default function ShowHand(props) {
           }
           else if (card.color === 'blue'){
             return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
-              Counter opponent card
+              counter opponent card
               {/* ,{card.color} */}
-          </div>} 
+          </div>} else {
+            return null
+          }
         }
         )
       }
