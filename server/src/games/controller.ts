@@ -4,7 +4,7 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Card } from './entities'
-import {calculateWinner, generateRandomCard} from './logic'
+import {calculateWinner, generateRandomCard, calculatePoints} from './logic'
 import {io} from '../index'
 
 class GameUpdate {
@@ -86,7 +86,7 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() update: GameUpdate
   ) {
-    console.log('update test:', update)
+    // console.log('update test:', update)
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 
@@ -110,19 +110,22 @@ export default class GameController {
     // putting the card played into the game.stack
     const card = await Card.findOneById(update.cardId)
     if(card){
-      console.log("card before ordernumber added", card)
+      // console.log("card before ordernumber added", card)
       card.ordernumber = game.stackorder
-      console.log("stackorder before", game.stackorder)
-      console.log("cardordernumber before.", card.ordernumber)
+      // console.log("stackorder before", game.stackorder)
+      // console.log("cardordernumber before.", card.ordernumber)
       game.stackorder ++
-      console.log("stackorder after incr.", game.stackorder)
-      console.log("cardordernumber after incr.", card.ordernumber)
-      console.log("card after ordernumber added", card)
+      // console.log("stackorder after incr.", game.stackorder)
+      // console.log("cardordernumber after incr.", card.ordernumber)
+      // console.log("card after ordernumber added", card)
       await card.save()
       game.stack.push(card)
     }
-    console.log("update game find card test: ", card)
-    console.log("stack test one: ", game.stack)
+    // console.log("update game find card test: ", card)
+    // console.log("stack test one: ", game.stack)
+    
+    calculatePoints(game, player)
+    await player.save()
     await game.save()
 
     const newGame = await Game.findOneById(gameId)
@@ -139,7 +142,8 @@ export default class GameController {
       newGame.turn = player.symbol === 'x' ? 'o' : 'x'
     }
     await newGame.save()
-    
+
+
     io.emit('action', {
       type: 'UPDATE_GAME',
       payload: newGame
