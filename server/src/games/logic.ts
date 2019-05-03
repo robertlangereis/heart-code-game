@@ -19,9 +19,9 @@ export const generateRandomCard = (symbol: Symbol): Card => {
   randomCard.symbol = symbol
   const randomNumber = Math.floor(Math.random() * 100)
   let color = ''
-  if (randomNumber <= 35) {
+  if (randomNumber <= 20) {
     color = 'green'
-  } else if (randomNumber <= 70 && randomNumber >= 36) {
+  } else if (randomNumber <= 70 && randomNumber >= 21) {
     color = 'red'
   } else if (randomNumber <= 86 && randomNumber >= 71) {
     color = 'blue'
@@ -88,9 +88,9 @@ export const calculatePoints = (game: Game, player: Player) => {
         
         case "purple":
           if (card.symbol === player.symbol) {
-            player.score = player.score * 2
+            player.score = player.score = Math.floor(player.score * 2)
           }  else {
-            opponent.score = opponent.score * 2
+            opponent.score = (opponent.score = Math.floor(opponent.score * 2))
           }
           break;
       }
