@@ -109,13 +109,27 @@ export default class GameController {
 
     // putting the card played into the game.stack
     const card = await Card.findOneById(update.cardId)
+    if(card){
+      console.log("card before ordernumber added", card)
+      card.ordernumber = game.stackorder
+      console.log("stackorder before", game.stackorder)
+      console.log("cardordernumber before.", card.ordernumber)
+      game.stackorder ++
+      console.log("stackorder after incr.", game.stackorder)
+      console.log("cardordernumber after incr.", card.ordernumber)
+      console.log("card after ordernumber added", card)
+      await card.save()
+      game.stack.push(card)
+    }
     console.log("update game find card test: ", card)
-    card && game.stack.unshift(card)
     console.log("stack test one: ", game.stack)
     await game.save()
 
     const newGame = await Game.findOneById(gameId)
     if (!newGame) throw new NotFoundError(`Game does not exist`)
+
+    // newGame.stack = newGame.stack.sort(card => card.ordernumber.sort()) 
+    newGame.stack = newGame.stack.sort((a, b) => (a.ordernumber > b.ordernumber) ? 1 : -1)
 
     const winner = calculateWinner(player, newGame)
     if (winner) {

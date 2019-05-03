@@ -11,6 +11,9 @@ export class Game extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number
 
+  @Column({nullable: true})
+  stackorder: number
+
   @Column('char', {length:1, default: 'x'})
   turn: Symbol
 
@@ -55,11 +58,14 @@ export class Player extends BaseEntity {
   hand: Card[]
 }
 
-@Entity()
+@Entity('cards', { orderBy: { ordernumber: 'ASC' }})
 export class Card extends BaseEntity {
   
   @PrimaryGeneratedColumn()
   id?: number
+
+  @Column({nullable: true})
+  ordernumber: number
 
   @Column()
   color: string
