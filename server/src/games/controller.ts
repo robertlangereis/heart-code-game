@@ -128,6 +128,9 @@ export default class GameController {
     const newGame = await Game.findOneById(gameId)
     if (!newGame) throw new NotFoundError(`Game does not exist`)
 
+    // newGame.stack = newGame.stack.sort(card => card.ordernumber.sort()) 
+    newGame.stack = newGame.stack.sort((a, b) => (a.ordernumber > b.ordernumber) ? 1 : -1)
+
     const winner = calculateWinner(player, newGame)
     if (winner) {
       newGame.winner = winner
