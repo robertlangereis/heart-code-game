@@ -27,7 +27,7 @@
 
 .heart-code-card-standard {
   font-family: MedievalSharp;
-  font-size: 2em;
+  font-size: 1em;
   z-index: 5;
   margin: 10px;
   width: 150px;
@@ -60,6 +60,7 @@
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center;
+  /* content: 'attack point(s)'; */
 }
 
 .heart-code-card-green {
@@ -68,6 +69,7 @@
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center; 
+  /* content: '+ health'; */
 }
 
 .heart-code-card-back {
@@ -83,6 +85,7 @@
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center; 
+  /* content: 'counter-card!'; */
 }
 
 .heart-code-card-black {
@@ -92,6 +95,7 @@
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center; 
+  /* content: '10 attack points'; */
 }
 
 .heart-code-card-purple {
@@ -100,4 +104,5 @@
   background-size: 100px 100px;
   background-repeat: no-repeat;
   background-position: center; 
+  /* content: '+10 health'; */
 }

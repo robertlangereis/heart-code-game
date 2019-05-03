@@ -8,11 +8,34 @@ export default function ShowHand(props) {
         .map(
           card => {
             const className = `heart-code-card-${card.color} heart-code-card-standard`
+            if (card.color === 'red'){
             return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
-              {card.points} Point(s)
+              {card.points} attack points
+              {/* ,{card.color} */}
+            </div>
+          } else if (card.color === 'black'){
+            return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
+              10 attack points
+              {/* ,{card.color} */}
+            </div>
+          } else if (card.color === 'purple'){
+            return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
+              10 health points
               {/* ,{card.color} */}
             </div>
           }
+          else if (card.color === 'green'){
+            return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
+              {card.points} health points
+              {/* ,{card.color} */}
+            </div>
+          }
+          else if (card.color === 'blue'){
+            return <div key={card.id} className={className} onClick={() => props.onCardClick(card.id)}>
+              Counter opponent card
+              {/* ,{card.color} */}
+          </div>} 
+        }
         )
       }
       <div className="score-wrapper">
