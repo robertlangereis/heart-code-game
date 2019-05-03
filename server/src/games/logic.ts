@@ -35,53 +35,68 @@ export const generateRandomCard = (symbol: Symbol): Card => {
 }
 
 
-// export const calculatePoints = (stack: Stack) => {
-  
-//   let playerOScore: number = 20
-//   let playerXScore: number = 20
-//   let isValid: boolean = true
-  
-//   if (!stack) return
-//   stack.map( card => {
-//     if(!isValid) { return isValid = true}
-//     else {
-//       switch (card.color){
+export const calculatePoints = (game: Game, player: Player) => {
+  console.log('calculating points test!')
+  const gameStack = game.stack
+  const opponent = game.players.find(item => item.id !== player.id)
+  if (opponent) {
+    opponent.score = 20
+  }
+  player.score = 20
+  let isValid: boolean = true
+  console.log("stack test calculatePoints", game.stack)
+
+  if (!gameStack && !opponent) return null
+  gameStack.map( card => {
+    console.log("points test: ", player.score, opponent && opponent.score)
+    console.log('card test:', card)
+    if (!isValid) {
+      return isValid = true
+    } else if (opponent) {
+      console.log('card.color test:', card.color)
+      switch (card.color) {
+        case "red":
+          console.log('red test!')
+          if (card.symbol === player.symbol) {
+            opponent.score = opponent.score - card.points
+          } else {
+            player.score = player.score - card.points
+          }
+          break;
+        
+        case "green":
+          console.log('green test!')
+          if (card.symbol === player.symbol) {
+            player.score = player.score + card.points
+          }
+          else {
+            opponent.score = opponent.score + card.points
+          }
+          break;
+        
+        case "blue":
+          isValid = false
+          break;
+        
+        case "black":
+          if (card.symbol === player.symbol) {
+            opponent.score = (opponent.score = Math.floor(opponent.score / 2))
+          } else {
+            player.score = player.score = Math.floor(player.score / 2)
+          }
+          break;
+        
+        case "purple":
+          if (card.symbol === player.symbol) {
+            player.score = player.score * 2
+          }  else {
+            opponent.score = opponent.score * 2
+          }
+          break;
+      }
       
-//       case "red":
-//         if(card.playerId === "hand1"){
-//         return playerTwoScore - card.points
-//         }
-//         else {return playerOneScore - card.points}
-      
-//       case "green":
-//         if(card.playerId === "hand1"){
-//         return playerOneScore + card.points
-//         }
-//         else {return playerTwoScore + card.points}
-      
-//       case "blue":
-//         return isValid = false
-      
-//       case "black":
-//         if(card.playerId === "hand1"){
-//           return playerTwoScore = Math.floor(playerTwoScore / 2)
-//         } else {return playerOneScore = Math.floor(playerOneScore / 2)}
-      
-//       case "purple":
-//         if(card.playerId === "hand1"){
-//         return playerOneScore * 2
-//         }  else return playerTwoScore * 2
-//       }
-//     }
-//   })
-//   }
-  
-//   export const calculateWinner = (player: Player, player2: Player): PlayerHand | null =>{
-//     if (player.points <= 0){
-//       return "hand2"
-//     } else if (player2.points <= 0) {
-//       return "hand1"
-//     } else {
-//       return null
-//     }
-//   }
+    }
+  })
+  player.save()
+  opponent && opponent.save()
+}

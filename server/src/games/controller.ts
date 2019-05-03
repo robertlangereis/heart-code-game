@@ -4,7 +4,7 @@ import {
 } from 'routing-controllers'
 import User from '../users/entity'
 import { Game, Player, Card } from './entities'
-import {calculateWinner, generateRandomCard} from './logic'
+import {calculateWinner, generateRandomCard, calculatePoints} from './logic'
 import {io} from '../index'
 
 class GameUpdate {
@@ -86,7 +86,6 @@ export default class GameController {
     @Param('id') gameId: number,
     @Body() update: GameUpdate
   ) {
-    console.log('update test:', update)
     const game = await Game.findOneById(gameId)
     if (!game) throw new NotFoundError(`Game does not exist`)
 
@@ -110,42 +109,65 @@ export default class GameController {
     // putting the card played into the game.stack
     const card = await Card.findOneById(update.cardId)
     if(card){
-      console.log("card before ordernumber added", card)
-      card.ordernumber = game.stackorder
-      console.log("stackorder before", game.stackorder)
-      console.log("cardordernumber before.", card.ordernumber)
+      // console.log("card before ordernumber added", card)
       game.stackorder ++
-      console.log("stackorder after incr.", game.stackorder)
-      console.log("cardordernumber after incr.", card.ordernumber)
-      console.log("card after ordernumber added", card)
+      card.ordernumber = game.stackorder
+      // console.log("stackorder before", game.stackorder)
+      // console.log("cardordernumber before.", card.ordernumber)
+      // console.log("stackorder after incr.", game.stackorder)
+      // console.log("cardordernumber after incr.", card.ordernumber)
+      // console.log("card after ordernumber added", card)
       await card.save()
       game.stack.push(card)
     }
-    console.log("update game find card test: ", card)
-    console.log("stack test one: ", game.stack)
     await game.save()
+    // console.log("update game find card test: ", card)
+    // console.log("stack test one: ", game.stack)
 
     const newGame = await Game.findOneById(gameId)
     if (!newGame) throw new NotFoundError(`Game does not exist`)
 
-    // newGame.stack = newGame.stack.sort(card => card.ordernumber.sort()) 
-    newGame.stack = newGame.stack.sort((a, b) => (a.ordernumber > b.ordernumber) ? 1 : -1)
+    // newGame.stack = newGame.stack.sort(card => card.ordernumber.sort())
+    const newStack = newGame
+      .stack
+      .sort((a, b) => (a.ordernumber < b.ordernumber) ? 1 : -1)
 
-    const winner = calculateWinner(player, newGame)
-    if (winner) {
-      newGame.winner = winner
-      newGame.status = 'finished'
-    } else {
-      newGame.turn = player.symbol === 'x' ? 'o' : 'x'
-    }
+    newGame.stack = newStack
+
+    calculatePoints(newGame, player)
+    console.log('after calc players test:', newGame.players)
+    
+    await player.save()
+    console.log("after points calc na Player save: ", newGame.players)
     await newGame.save()
+    console.log("after points calc newGame save: ", newGame.players)
+
+    const finalGame = await Game.findOneById(gameId)
+    if (!finalGame) throw new NotFoundError(`Game does not exist`)
+    
+    console.log("final game scores test: ", finalGame.players)
+    
+    const finalStack = finalGame
+      .stack
+      .sort((a, b) => (a.ordernumber > b.ordernumber) ? 1 : -1)
+
+    finalGame.stack = finalStack
+
+    const winner = calculateWinner(player, finalGame)
+    if (winner) {
+      finalGame.winner = winner
+      finalGame.status = 'finished'
+    } else {
+      finalGame.turn = player.symbol === 'x' ? 'o' : 'x'
+    }
+    await finalGame.save()
     
     io.emit('action', {
       type: 'UPDATE_GAME',
-      payload: newGame
+      payload: finalGame
     })
-    console.log("returning game test: ", newGame)
-    return newGame
+
+    return finalGame
   }
 
   @Authorized()
