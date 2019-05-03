@@ -8,6 +8,7 @@ import ShowHand from './ShowHand'
 import ShowStack from './ShowStack'
 import Paper from '@material-ui/core/Paper'
 import './GameDetails.css'
+import ShowOpponentStats from './ShowOpponentStats';
 
 class GameDetails extends PureComponent {
 
@@ -46,7 +47,11 @@ class GameDetails extends PureComponent {
     const player = game.players.find(p => p.userId === userId)
     const opponent = game.players.find(p => p.userId !== userId)
     
-    console.log("stack check", game.stack)
+    console.log("opponent check", opponent.symbol, opponent.score)
+    const opponentStats = opponent &&
+      game.status !== 'pending' &&
+      <ShowOpponentStats score={opponent.score}/>
+
     const stack = game.stack && 
       <ShowStack stack={game.stack}/>
 
@@ -90,6 +95,7 @@ class GameDetails extends PureComponent {
           }
 
           <hr />
+          {opponentStats}
           {stack}
           {hand}
         </Paper>

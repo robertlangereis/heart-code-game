@@ -8,12 +8,24 @@
 .player-hand {
   display: flex;
 }
+
+.opponent-stats {
+  display: flex;
+}
+
+.score-wrapper {
+  flex-direction: row;
+  font-family: MedievalSharp;
+  font-size: 2em;
+  white-space: pre-wrap;
+}
+
 @font-face {
   font-family: MedievalSharp;
   src: url('./icons/MedievalSharp/MedievalSharp.ttf')
 }
 
-.heart-code-card-red {
+.heart-code-card-standard {
   font-family: MedievalSharp;
   font-size: 2em;
   z-index: 5;
@@ -21,21 +33,36 @@
   width: 150px;
   height: 300px;  
   border: 2px solid black;
-  background: red;
-  background-image: url('./icons/ember-shot\ \(1\).png');
-  background-size: 100px 100px;
-  background-repeat: no-repeat;
-  background-position: center; 
+  border-radius: 5px;
+  position: relative;
+  top: 0;
+  transition: top ease 0.5s; 
 }
 
-.heart-code-card-green {
+.heart-code-card-standard:hover {
+  top: -20px;
+}
+
+.heart-code-card-standard-without-transformation {
   font-family: MedievalSharp;
   font-size: 2em;
   z-index: 5;
   margin: 10px;
   width: 150px;
-  height: 300px;
+  height: 300px;  
   border: 2px solid black;
+  border-radius: 5px;
+}
+
+.heart-code-card-red {
+  background: red;
+  background-image: url('./icons/ember-shot\ \(1\).png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.heart-code-card-green {
   background: rgb(121, 211, 121);
   background-image: url('./icons/magic-potion\ \(1\).png');
   background-size: 100px 100px;
@@ -43,14 +70,14 @@
   background-position: center; 
 }
 
+.heart-code-card-back {
+  background-image: url('./icons/heart-code-logo.png');
+  background-size: 100px 100px;
+  background-repeat: no-repeat;
+  background-position: center; 
+}
+
 .heart-code-card-blue {
-  font-family: MedievalSharp;
-  font-size: 2em;
-  z-index: 5;
-  margin: 10px;
-  width: 150px;
-  height: 300px;
-  border: 2px solid black;
   background: lightskyblue;
   background-image: url('./icons/magic-portal.png');
   background-size: 100px 100px;
@@ -59,13 +86,6 @@
 }
 
 .heart-code-card-black {
-  font-family: MedievalSharp;
-  font-size: 2em;
-  z-index: 5;
-  margin: 10px;
-  width: 150px;
-  height: 300px;  
-  border: 2px solid black;
   background: grey;
   color: white;
   background-image: url('./icons/diablo-skull\ \(1\).png');
@@ -75,13 +95,6 @@
 }
 
 .heart-code-card-purple {
-  font-family: MedievalSharp;
-  font-size: 2em;
-  z-index: 5;
-  margin: 10px;
-  width: 150px;
-  height: 300px;
-  border: 2px solid black;
   background: purple;
   background-image: url('./icons/crenulated-shield.png');
   background-size: 100px 100px;
