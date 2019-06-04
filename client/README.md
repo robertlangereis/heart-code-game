@@ -1,5 +1,5 @@
-# Heartcode Server
-
+# Heartcode Client 
+*NOTE: this game (and game logic) is still in development*
 This is the frontend for playing the multiplayer card game "Heartcode", created by Edwin Hoenselaar & Robert Langereis. It's build using the standard `create-react-app` so the usual `npm start` can be used.
 
 ## Running
