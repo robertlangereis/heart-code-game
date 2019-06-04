@@ -1,5 +1,9 @@
-# Tic Tac Toe front end
+# Heartcode Server
 
-This is the frontend for the game starter in which you can play Tic Tac Toe with a friend. It's build using the standard `create-react-app` so the usual `yarn start` can be used.
+This is the frontend for playing the multiplayer card game "Heartcode", created by Edwin Hoenselaar & Robert Langereis. It's build using the standard `create-react-app` so the usual `npm start` can be used.
 
-The backend (server) of this project must be running for the app to function correctly.
+## Running
+
+* Install the dependencies using `npm install`
+* You'll a working backend for this game, which can be found in this same repository (https://github.com/robertlangereis/heart-code-game/tree/developer/server)
+* `npm start`
