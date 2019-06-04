@@ -1,5 +1,5 @@
 # Heartcode Server
-
+*NOTE: this game (and game logic) is still in development*
 This is a server for playing the multiplayer card game "Heartcode", created by Edwin Hoenselaar & Robert Langereis. 
 
 It has these endpoints:
