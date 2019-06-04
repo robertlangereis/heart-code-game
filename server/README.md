@@ -1,6 +1,6 @@
-# Tic Tac Toe Server
+# Heartcode Server
 
-This is a server for playing a multiplayer Tic Tac Toe game. 
+This is a server for playing the multiplayer card game "Heartcode", created by Edwin Hoenselaar & Robert Langereis. 
 
 It has these endpoints:
 
@@ -15,8 +15,6 @@ It has these endpoints:
 ## Running
 
 * You need a working Postgres database that is preferrably empty (drop all the tables) and running 
-* Install the dependencies using `yarn install`
-* Compile the app (Typescript > Javascript) using `yarn compile` (during development you can use `yarn watch`)
-* `yarn start`
-
-You can run the tests with `yarn test`. Currently they only cover the game logic. 
+* Install the dependencies using `npm install`
+* Compile the app (Typescript > Javascript) using `npm compile` (during development you can use `npm watch`)
+* `npm run dev`

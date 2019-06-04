@@ -12,14 +12,12 @@ export default class UserController {
     const {password, ...rest} = data
     const entity = User.create(rest)
     await entity.setPassword(password)
-
     const user = await entity.save()
 
     io.emit('action', {
       type: 'ADD_USER',
       payload: entity
     })
-
     return user
   }
 

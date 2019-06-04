@@ -72,13 +72,3 @@ export const calculatePoints = (game: Game, player: Player) => {
     }
   })
   }
-  
-  // export const calculateWinner = (player: Player, player2: Player): PlayerHand | null =>{
-  //   if (player.points <= 0){
-  //     return "hand2"
-  //   } else if (player2.points <= 0) {
-  //     return "hand1"
-  //   } else {
-  //     return null
-  //   }
-  // }
