@@ -1,84 +1,87 @@
-import { BaseEntity, PrimaryGeneratedColumn, Column, Entity, Index, OneToMany, ManyToOne } from 'typeorm'
-import User from '../users/entity'
+import {
+  BaseEntity,
+  PrimaryGeneratedColumn,
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  ManyToOne,
+} from "typeorm";
+import User from "../users/entity";
 
-export type Symbol = 'x' | 'o'
+export type Symbol = "x" | "o";
 
-type Status = 'pending' | 'started' | 'finished'
+type Status = "pending" | "started" | "finished";
 
 @Entity()
 export class Game extends BaseEntity {
-
   @PrimaryGeneratedColumn()
-  id?: number
+  id?: number;
 
-  @Column({nullable: true})
-  stackorder: number
+  @Column({ nullable: true })
+  stackorder: number;
 
-  @Column('char', {length:1, default: 'x'})
-  turn: Symbol
+  @Column("char", { length: 1, default: "x" })
+  turn: Symbol;
 
-  @Column('char', {length:1, nullable: true})
-  winner: Symbol
+  @Column("char", { length: 1, nullable: true })
+  winner: Symbol;
 
-  @Column('text', {default: 'pending'})
-  status: Status
+  @Column("text", { default: "pending" })
+  status: Status;
 
-  @OneToMany(_ => Player, player => player.game, {eager: true})
-  players: Player[]
+  @OneToMany(_ => Player, player => player.game, { eager: true })
+  players: Player[];
 
-  @OneToMany(_ => Card, card => card.game, {eager: true})
-  stack: Card[]
+  @OneToMany(_ => Card, card => card.game, { eager: true })
+  stack: Card[];
 }
 
 @Entity()
-@Index(['game', 'user', 'symbol'], {unique:true})
+@Index(["game", "user", "symbol"], { unique: true })
 export class Player extends BaseEntity {
-
   @PrimaryGeneratedColumn()
-  id?: number
+  id?: number;
 
   @ManyToOne(_ => User, user => user.players)
-  user: User
+  user: User;
 
   @ManyToOne(_ => Game, game => game.players)
-  game: Game
+  game: Game;
 
-  @Column('char', {length: 1})
-  symbol: Symbol
+  @Column("char", { length: 1 })
+  symbol: Symbol;
 
-  @Column({nullable: true, default: 20})
-  score: number
+  @Column({ nullable: true, default: 20 })
+  score: number;
 
-  @Column('integer', { name: 'user_id' })
-  userId: number
+  @Column("integer", { name: "user_id" })
+  userId: number;
 
-  @OneToMany(_ => Card, card => card.player, {eager: true})
-  hand: Card[]
+  @OneToMany(_ => Card, card => card.player, { eager: true })
+  hand: Card[];
 }
 
-@Entity('cards', { orderBy: { ordernumber: 'ASC' }})
+@Entity("cards", { orderBy: { ordernumber: "ASC" } })
 export class Card extends BaseEntity {
-  
   @PrimaryGeneratedColumn()
-  id?: number
+  id?: number;
 
-  @Column({nullable: true})
-  ordernumber: number
-
-  @Column()
-  color: string
+  @Column({ nullable: true })
+  ordernumber: number;
 
   @Column()
-  points: number
+  color: string;
 
-  @Column({nullable: true})
-  symbol: Symbol
+  @Column()
+  points: number;
 
-  @ManyToOne(_ => Player, player => player.hand, {nullable: true})
-  player: Player | null
+  @Column({ nullable: true })
+  symbol: Symbol;
+
+  @ManyToOne(_ => Player, player => player.hand, { nullable: true })
+  player: Player | null;
 
   @ManyToOne(_ => Game, game => game.stack)
-  game: Game
+  game: Game;
 }
-
-
